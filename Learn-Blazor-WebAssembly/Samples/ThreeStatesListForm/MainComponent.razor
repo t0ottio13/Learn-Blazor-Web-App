@@ -1,0 +1,37 @@
+﻿@page "/three-states-list-form"
+@using System.Text.Json;
+
+<h3>Selection Form with All Selection Buttons</h3>
+
+<EditForm Model="@model" OnValidSubmit="@HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <FluentStack Orientation="Orientation.Vertical">
+        <div>
+            <FluentTextField @bind-Value="model.Name" Label="Your Name" />
+        </div>
+        <div>
+            <CascadingValue Value="model.SelectedLists">
+                <ThreeStatesListComponent></ThreeStatesListComponent>
+            </CascadingValue>
+        </div>
+        <FluentButton Type="ButtonType.Submit" Appearance="@Appearance.Accent">Submit</FluentButton>
+    </FluentStack>
+</EditForm>
+
+<div class="mt-4">
+    <p>Submit Value: @jsonString</p>
+</div>
+
+@code {
+    private FormModel model = new FormModel();
+
+    private string jsonString = string.Empty;
+
+    private void HandleValidSubmit()
+    {
+        Console.WriteLine("Submit");
+        jsonString = JsonSerializer.Serialize(model);
+        Console.WriteLine(jsonString);
+    }
+}
